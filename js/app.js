@@ -46,7 +46,7 @@ const memory = (function() {
         document.querySelector(DOM.deck).innerHTML = html;
     };
 
-    let init = function() {
+    const init = function() {
         // Duplicate provided cards and shuffle them
         deckArray.push(...shuffleCards([...cards, ...cards]));
         console.log(deckArray);
