@@ -1,6 +1,52 @@
 /*
- * Create a list that holds all of your cards
+ * List of cards
  */
+const cards = [
+    'fa-diamond',
+    'fa-anchor',
+    'fa-bolt',
+    'fa-leaf',
+    'fa-cube',
+    'fa-bicycle',
+    'fa-bomb',
+    'fa-paper-plane-o'
+];
+
+const memory = (function() {
+    // This array determines which cards takes which position on the game board
+    const deckArray = [],
+    DOM = {
+        scorePanel: '.score-panel',
+        stars: '.stars',
+        moves: '.moves',
+        restartBtn: '.restart',
+        deck: '.deck',
+    };
+
+    const createListItem = function(icon, index) {
+        return `<li class="card open show" data-index="${index}"><i class="fa ${icon}"></i></li>`;
+    };
+
+    const render = function() {
+        let html = deckArray.map(function(icon, index) {
+            return createListItem(icon, index);
+        }).join('');
+        console.log('html', html);
+        document.querySelector(DOM.deck).innerHTML = html;
+    };
+
+    let init = function(cards) {
+        deckArray.push(...cards, ...cards);
+        console.log(deckArray);
+        render();
+    };
+
+    return {
+        init,
+    };
+})();
+
+memory.init(cards);
 
 
 /*
