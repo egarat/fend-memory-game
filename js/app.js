@@ -1,27 +1,25 @@
-/*
- * List of cards
- */
-const cards = [
-    'fa-diamond',
-    'fa-anchor',
-    'fa-bolt',
-    'fa-leaf',
-    'fa-cube',
-    'fa-bicycle',
-    'fa-bomb',
-    'fa-paper-plane-o'
-];
-
 const memory = (function() {
     // This array determines which cards takes which position on the game board
     const deckArray = [],
+    // This object holds the strings for the query selector in a central place
     DOM = {
         scorePanel: '.score-panel',
         stars: '.stars',
         moves: '.moves',
         restartBtn: '.restart',
         deck: '.deck',
-    };
+    },
+    // Cards for the game
+    cards = [
+        'fa-diamond',
+        'fa-anchor',
+        'fa-bolt',
+        'fa-leaf',
+        'fa-cube',
+        'fa-bicycle',
+        'fa-bomb',
+        'fa-paper-plane-o'
+    ];
     
     // Shuffle function from http://stackoverflow.com/a/2450976
     const shuffleCards = function(cards) {
@@ -48,7 +46,7 @@ const memory = (function() {
         document.querySelector(DOM.deck).innerHTML = html;
     };
 
-    let init = function(cards) {
+    let init = function() {
         // Duplicate provided cards and shuffle them
         deckArray.push(...shuffleCards([...cards, ...cards]));
         console.log(deckArray);
@@ -60,7 +58,7 @@ const memory = (function() {
     };
 })();
 
-memory.init(cards);
+memory.init();
 
 // DONE
 /*
