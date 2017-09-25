@@ -22,6 +22,19 @@ const memory = (function() {
         restartBtn: '.restart',
         deck: '.deck',
     };
+    
+    // Shuffle function from http://stackoverflow.com/a/2450976
+    const shuffleCards = function(cards) {
+        let currentIndex = cards.length, temporaryValue, randomIndex;
+            while (currentIndex !== 0) {
+                randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex -= 1;
+                temporaryValue = cards[currentIndex];
+                cards[currentIndex] = cards[randomIndex];
+                cards[randomIndex] = temporaryValue;
+            }
+        return cards;
+    };
 
     const createListItem = function(icon, index) {
         return `<li class="card open show" data-index="${index}"><i class="fa ${icon}"></i></li>`;
@@ -36,7 +49,8 @@ const memory = (function() {
     };
 
     let init = function(cards) {
-        deckArray.push(...cards, ...cards);
+        // Duplicate provided cards and shuffle them
+        deckArray.push(...shuffleCards([...cards, ...cards]));
         console.log(deckArray);
         render();
     };
@@ -55,22 +69,6 @@ memory.init(cards);
  *   - loop through each card and create its HTML
  *   - add each card's HTML to the page
  */
-
-// Shuffle function from http://stackoverflow.com/a/2450976
-function shuffle(array) {
-    var currentIndex = array.length, temporaryValue, randomIndex;
-
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex -= 1;
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
-    }
-
-    return array;
-}
-
 
 /*
  * set up the event listener for a card. If a card is clicked:
