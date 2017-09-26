@@ -20,6 +20,9 @@ const memory = (function() {
         'fa-bomb',
         'fa-paper-plane-o'
     ];
+
+    // This variable will hold the node of the first card shown this turn
+    let firstCard;
     
     // Shuffle function from http://stackoverflow.com/a/2450976
     const shuffleCards = function(cards) {
@@ -34,16 +37,37 @@ const memory = (function() {
         return cards;
     };
 
-    const setEventListener = function() {
-        document.querySelector(DOM.deck).addEventListener('click', function(evt) {
-            // Abort function when clicked element is not a list item
-            if(evt.target.tagName !== 'LI') return;
-            
-            const selectedCard = evt.target;
+    const cardsMatch = function(selectedCard) {
+        return deckArray[firstCard.dataset.index] === deckArray[selectedCard.dataset.index];
+    };
+
+    const showCards = function(evt) {
+        // Silently return function when clicked element is not a list item or is shown
+        if(evt.target.tagName !== 'LI' || evt.target.classList.contains('open')) return;
+        
+        const selectedCard = evt.target;
+        
+        // Check if it is the second shown card in this turn
+        if(firstCard) {
+            // Check if cards match
+            if(cardsMatch(selectedCard)) {
+                firstCard.classList.add('match');
+                selectedCard.classList.add('match');
+                firstCard = null;
+            } else {
+                firstCard = null;
+                console.log('not match');
+            }
+        } else {
+        // Store show and store card to variable to compare with the second card
             selectedCard.classList.add('open');
-            selectedCard.classList.add('show');
-         });
-    }
+            firstCard = selectedCard;
+        }
+    };
+
+    const setEventHandler = function() {
+        document.querySelector(DOM.deck).addEventListener('click', showCards);
+    };
 
     const createListItem = function(icon, index) {
         return `<li class="card" data-index="${index}"><i class="fa ${icon}"></i></li>`;
@@ -60,8 +84,8 @@ const memory = (function() {
     const init = function() {
         // Duplicate provided cards and shuffle them
         deckArray.push(...shuffleCards([...cards, ...cards]));
+        setEventHandler();
         render();
-        setEventListener();
     };
 
     return {
