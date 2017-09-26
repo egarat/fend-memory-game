@@ -37,6 +37,11 @@ const memory = (function() {
         return cards;
     };
 
+    const toggleCardsStyle = function(cardOne, cardTwo, className) {
+        cardOne.classList.toggle(className);
+        cardTwo.classList.toggle(className);
+    };
+
     const cardsMatch = function(selectedCard) {
         return deckArray[firstCard.dataset.index] === deckArray[selectedCard.dataset.index];
     };
@@ -46,21 +51,23 @@ const memory = (function() {
         if(evt.target.tagName !== 'LI' || evt.target.classList.contains('open')) return;
         
         const selectedCard = evt.target;
+        selectedCard.classList.add('open');
         
         // Check if it is the second shown card in this turn
         if(firstCard) {
             // Check if cards match
             if(cardsMatch(selectedCard)) {
-                firstCard.classList.add('match');
-                selectedCard.classList.add('match');
-                firstCard = null;
+                setTimeout(function() {
+                    toggleCardsStyle(firstCard, selectedCard, 'match');
+                    firstCard = null;
+                }, 400);
             } else {
-                firstCard = null;
-                console.log('not match');
+                firstCard.classList.add('mismatch');
+                selectedCard.classList.add('mismatch');
             }
+            // Clear firstCard for the next turn
         } else {
         // Store show and store card to variable to compare with the second card
-            selectedCard.classList.add('open');
             firstCard = selectedCard;
         }
     };
