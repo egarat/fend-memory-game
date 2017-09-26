@@ -62,8 +62,16 @@ const memory = (function() {
                     firstCard = null;
                 }, 400);
             } else {
-                firstCard.classList.add('mismatch');
-                selectedCard.classList.add('mismatch');
+                setTimeout(function() {
+                    toggleCardsStyle(firstCard, selectedCard, 'mismatch');
+                    
+                    // Hide cards again after indicating the mismatch
+                    setTimeout(function() {
+                        toggleCardsStyle(firstCard, selectedCard, 'open');
+                        toggleCardsStyle(firstCard, selectedCard, 'mismatch');
+                        firstCard = null;
+                    }, 800);
+                }, 400)
             }
             // Clear firstCard for the next turn
         } else {
