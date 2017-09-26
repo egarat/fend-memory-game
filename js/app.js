@@ -22,7 +22,9 @@ const memory = (function() {
     ];
 
     // This variable will hold the node of the first card shown this turn
-    let firstCard;
+    let firstCard,
+    // During card animations this variable will be set to true to prevent clicking on other cards while the animation is still ongoing
+    freezeGame = false;
     
     // Shuffle function from http://stackoverflow.com/a/2450976
     const shuffleCards = function(cards) {
@@ -48,7 +50,7 @@ const memory = (function() {
 
     const showCards = function(evt) {
         // Silently return function when clicked element is not a list item or is shown
-        if(evt.target.tagName !== 'LI' || evt.target.classList.contains('open')) return;
+        if(evt.target.tagName !== 'LI' || evt.target.classList.contains('open') || freezeGame) return;
         
         const selectedCard = evt.target;
         selectedCard.classList.add('open');
@@ -56,10 +58,12 @@ const memory = (function() {
         // Check if it is the second shown card in this turn
         if(firstCard) {
             // Check if cards match
+            freezeGame = true;
             if(cardsMatch(selectedCard)) {
                 setTimeout(function() {
                     toggleCardsStyle(firstCard, selectedCard, 'match');
                     firstCard = null;
+                    freezeGame = false;
                 }, 400);
             } else {
                 setTimeout(function() {
@@ -70,6 +74,7 @@ const memory = (function() {
                         toggleCardsStyle(firstCard, selectedCard, 'open');
                         toggleCardsStyle(firstCard, selectedCard, 'mismatch');
                         firstCard = null;
+                        freezeGame = false;
                     }, 800);
                 }, 400)
             }
