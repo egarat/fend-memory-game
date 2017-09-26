@@ -34,8 +34,19 @@ const memory = (function() {
         return cards;
     };
 
+    const setEventListener = function() {
+        document.querySelector(DOM.deck).addEventListener('click', function(evt) {
+            // Abort function when clicked element is not a list item
+            if(evt.target.tagName !== 'LI') return;
+            
+            const selectedCard = evt.target;
+            selectedCard.classList.add('open');
+            selectedCard.classList.add('show');
+         });
+    }
+
     const createListItem = function(icon, index) {
-        return `<li class="card open show" data-index="${index}"><i class="fa ${icon}"></i></li>`;
+        return `<li class="card" data-index="${index}"><i class="fa ${icon}"></i></li>`;
     };
 
     const render = function() {
@@ -49,8 +60,8 @@ const memory = (function() {
     const init = function() {
         // Duplicate provided cards and shuffle them
         deckArray.push(...shuffleCards([...cards, ...cards]));
-        console.log(deckArray);
         render();
+        setEventListener();
     };
 
     return {
