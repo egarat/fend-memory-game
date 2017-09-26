@@ -75,7 +75,7 @@ const memory = (function() {
                         toggleCardsStyle(firstCard, selectedCard, 'mismatch');
                         firstCard = null;
                         freezeGame = false;
-                    }, 800);
+                    }, 500);
                 }, 400)
             }
             // Clear firstCard for the next turn
