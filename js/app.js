@@ -31,15 +31,17 @@ const memory = (function() {
     stars = 3;
     
     // Shuffle function from http://stackoverflow.com/a/2450976
-    const shuffleCards = function(cards) {
-        let currentIndex = cards.length, temporaryValue, randomIndex;
-            while (currentIndex !== 0) {
-                randomIndex = Math.floor(Math.random() * currentIndex);
-                currentIndex -= 1;
-                temporaryValue = cards[currentIndex];
-                cards[currentIndex] = cards[randomIndex];
-                cards[randomIndex] = temporaryValue;
-            }
+    const shuffleCards = function(cards, times) {
+        for(let i = 0; i < times; i++) {
+            let currentIndex = cards.length, temporaryValue, randomIndex;
+                while (currentIndex !== 0) {
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    currentIndex -= 1;
+                    temporaryValue = cards[currentIndex];
+                    cards[currentIndex] = cards[randomIndex];
+                    cards[randomIndex] = temporaryValue;
+                }
+        }
         return cards;
     };
 
@@ -173,7 +175,7 @@ const memory = (function() {
 
     const init = function() {
         // Duplicate provided cards and shuffle them
-        deckArray.push(...shuffleCards([...cards, ...cards]));
+        deckArray.push(...shuffleCards([...cards, ...cards], 3));
         setEventHandler();
         render();
     };
