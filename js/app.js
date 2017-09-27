@@ -92,6 +92,7 @@ const memory = (function() {
 
     const setEventHandler = function() {
         document.querySelector(DOM.deck).addEventListener('click', showCards);
+        document.querySelector(DOM.restartBtn).addEventListener('click', restartGame);
     };
 
     const displayMoveCounter = function() {
@@ -113,6 +114,12 @@ const memory = (function() {
     const render = function() {
         generateDeck();
         displayMoveCounter();
+    };
+
+    const restartGame = function() {
+        moves = 0;
+        deckArray.splice(0,deckArray.length);
+        init();
     };
 
     const init = function() {
