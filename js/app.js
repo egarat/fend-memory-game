@@ -147,17 +147,19 @@ const memory = (function() {
         let html = deckArray.map(function(icon, index) {
             return createListItem(icon, index);
         }).join('');
-        console.log('html', html);
+
         document.querySelector(DOM.deck).innerHTML = html;
     }
 
     const render = function() {
         generateDeck();
         displayMoveCounter();
+        displayStars();
     };
 
     const restartGame = function() {
         moves = 0;
+        stars = 3;
         deckArray.splice(0,deckArray.length);
         init();
     };
