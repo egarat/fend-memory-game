@@ -52,9 +52,14 @@ const memory = (function() {
         return deckArray[firstCard.dataset.index] === deckArray[selectedCard.dataset.index];
     };
 
+    const finishTurn = function() {
+        firstCard = null;
+        freezeGame = false;
+    };
+
     const gameWon = function() {
         return document.querySelectorAll(DOM.card).length === document.querySelectorAll(DOM.match).length;
-    }
+    };
 
     const showCards = function(evt) {
         // Silently return function when clicked element is not a list item or is currently being shown
@@ -64,8 +69,7 @@ const memory = (function() {
         selectedCard.classList.add('open');
 
         // Increment move counter and update the display
-        moves++;
-        displayMoveCounter();
+        updateMoves();
         updateStars();
         
         // Check if it is the second shown card in this turn
@@ -75,9 +79,8 @@ const memory = (function() {
             if(cardsMatch(selectedCard)) {
                 setTimeout(function() {
                     toggleCardsStyle(firstCard, selectedCard, 'match');
-                    firstCard = null;
-                    freezeGame = false;
-
+                    finishTurn();
+                    
                     // Check if game is won
                     if(gameWon()) {
                         alert('You win!');
@@ -91,22 +94,21 @@ const memory = (function() {
                     setTimeout(function() {
                         toggleCardsStyle(firstCard, selectedCard, 'open');
                         toggleCardsStyle(firstCard, selectedCard, 'mismatch');
-                        firstCard = null;
-                        freezeGame = false;
+                        finishTurn();
                     }, 500);
                 }, 400)
             }
         } else {
-            // Store show and store card to variable to compare with the second card
+            // If this is the first card uncovered this turn, then store it to a variable to compare it with the next card
             firstCard = selectedCard;
         }
     };
-
+    
     const setEventHandler = function() {
         document.querySelector(DOM.deck).addEventListener('click', showCards);
         document.querySelector(DOM.restartBtn).addEventListener('click', restartGame);
     };
-
+    
     const displayStars = function() {
         let html = '';
         for(let i = 0; i < 3; i++) {
@@ -120,10 +122,10 @@ const memory = (function() {
                 html += '<i class="fa fa-star-o"></i>';
             }
         }
-
+        
         document.querySelector(DOM.stars).innerHTML = html;
     };
-
+    
     const updateStars = function() {
         // Stars cannot be lower than 0
         if(stars === 0 || moves <= deckArray.length) return;
@@ -134,9 +136,14 @@ const memory = (function() {
             displayStars();
         }
     };
-
+    
     const displayMoveCounter = function() {
         document.querySelector(DOM.moves).textContent = moves;
+    };
+    
+    const updateMoves = function() {
+        moves++;
+        displayMoveCounter();
     };
 
     const createListItem = function(icon, index) {
