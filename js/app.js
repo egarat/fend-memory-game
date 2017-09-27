@@ -102,12 +102,16 @@ const memory = (function() {
         return `<li class="card" data-index="${index}"><i class="fa ${icon}"></i></li>`;
     };
 
-    const render = function() {
+    const generateDeck = function() {
         let html = deckArray.map(function(icon, index) {
             return createListItem(icon, index);
         }).join('');
         console.log('html', html);
         document.querySelector(DOM.deck).innerHTML = html;
+    }
+
+    const render = function() {
+        generateDeck();
         displayMoveCounter();
     };
 
