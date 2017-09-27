@@ -27,7 +27,8 @@ const memory = (function() {
     let firstCard,
     // During card animations this variable will be set to true to prevent clicking on other cards while the animation is still ongoing
     freezeGame = false,
-    moves = 0;
+    moves = 0,
+    stars = 3;
     
     // Shuffle function from http://stackoverflow.com/a/2450976
     const shuffleCards = function(cards) {
@@ -65,6 +66,7 @@ const memory = (function() {
         // Increment move counter and update the display
         moves++;
         displayMoveCounter();
+        updateStars();
         
         // Check if it is the second shown card in this turn
         if(firstCard) {
@@ -103,6 +105,17 @@ const memory = (function() {
     const setEventHandler = function() {
         document.querySelector(DOM.deck).addEventListener('click', showCards);
         document.querySelector(DOM.restartBtn).addEventListener('click', restartGame);
+    };
+
+    const updateStars = function() {
+        // Stars cannot be lower than 0
+        if(stars === 0 || moves <= deckArray.length) return;
+        
+        // Reduce half a star for every 6 moves over the amount of cards in the deck
+        if((moves - deckArray.length) % 6 === 0) {
+            stars -= 0.5;
+            console.log(stars);
+        }
     };
 
     const displayMoveCounter = function() {
@@ -158,12 +171,14 @@ memory.init();
  *  - if the list already has another card, check to see if the two cards match
  *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
  *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
+ *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
+ *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
+ * reduce stars if the player made a certain amount of moves
  */
 
 // TODO
-/*    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- * reduce stars if the player made a certain amount of moves
+/*
+ * display stars
  * display timer
  * add functionality to restart game
  * add leaderboard
