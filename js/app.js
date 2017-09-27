@@ -24,7 +24,8 @@ const memory = (function() {
     // This variable will hold the node of the first card shown this turn
     let firstCard,
     // During card animations this variable will be set to true to prevent clicking on other cards while the animation is still ongoing
-    freezeGame = false;
+    freezeGame = false,
+    moves = 0;
     
     // Shuffle function from http://stackoverflow.com/a/2450976
     const shuffleCards = function(cards) {
@@ -54,6 +55,10 @@ const memory = (function() {
         
         const selectedCard = evt.target;
         selectedCard.classList.add('open');
+
+        // Increment move counter and update the display
+        moves++;
+        displayMoveCounter();
         
         // Check if it is the second shown card in this turn
         if(firstCard) {
@@ -89,6 +94,10 @@ const memory = (function() {
         document.querySelector(DOM.deck).addEventListener('click', showCards);
     };
 
+    const displayMoveCounter = function() {
+        document.querySelector(DOM.moves).textContent = moves;
+    };
+
     const createListItem = function(icon, index) {
         return `<li class="card" data-index="${index}"><i class="fa ${icon}"></i></li>`;
     };
@@ -99,6 +108,7 @@ const memory = (function() {
         }).join('');
         console.log('html', html);
         document.querySelector(DOM.deck).innerHTML = html;
+        displayMoveCounter();
     };
 
     const init = function() {
