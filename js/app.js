@@ -8,6 +8,8 @@ const memory = (function() {
         moves: '.moves',
         restartBtn: '.restart',
         deck: '.deck',
+        card: '.card',
+        match: '.match',
     },
     // Cards for the game
     cards = [
@@ -49,6 +51,10 @@ const memory = (function() {
         return deckArray[firstCard.dataset.index] === deckArray[selectedCard.dataset.index];
     };
 
+    const gameWon = function() {
+        return document.querySelectorAll(DOM.card).length === document.querySelectorAll(DOM.match).length;
+    }
+
     const showCards = function(evt) {
         // Silently return function when clicked element is not a list item or is currently being shown
         if(evt.target.tagName !== 'LI' || evt.target.classList.contains('open') || freezeGame) return;
@@ -69,6 +75,11 @@ const memory = (function() {
                     toggleCardsStyle(firstCard, selectedCard, 'match');
                     firstCard = null;
                     freezeGame = false;
+
+                    // Check if game is won
+                    if(gameWon()) {
+                        alert('You win!');
+                    }
                 }, 400);
             } else {
                 setTimeout(function() {
@@ -83,9 +94,8 @@ const memory = (function() {
                     }, 500);
                 }, 400)
             }
-            // Clear firstCard for the next turn
         } else {
-        // Store show and store card to variable to compare with the second card
+            // Store show and store card to variable to compare with the second card
             firstCard = selectedCard;
         }
     };
