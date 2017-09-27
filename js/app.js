@@ -107,6 +107,23 @@ const memory = (function() {
         document.querySelector(DOM.restartBtn).addEventListener('click', restartGame);
     };
 
+    const displayStars = function() {
+        let html = '';
+        for(let i = 0; i < 3; i++) {
+            if(stars > i) {
+                if(stars === i + 0.5) {
+                    html += '<i class="fa fa-star-half-o"></i>';
+                } else {
+                    html += '<i class="fa fa-star"></i>';
+                }
+            } else {
+                html += '<i class="fa fa-star-o"></i>';
+            }
+        }
+
+        document.querySelector(DOM.stars).innerHTML = html;
+    };
+
     const updateStars = function() {
         // Stars cannot be lower than 0
         if(stars === 0 || moves <= deckArray.length) return;
@@ -114,7 +131,7 @@ const memory = (function() {
         // Reduce half a star for every 6 moves over the amount of cards in the deck
         if((moves - deckArray.length) % 6 === 0) {
             stars -= 0.5;
-            console.log(stars);
+            displayStars();
         }
     };
 
@@ -174,13 +191,14 @@ memory.init();
  *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
  *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
  * reduce stars if the player made a certain amount of moves
+ * add functionality to restart game
+ * display stars
  */
 
 // TODO
 /*
- * display stars
+ * add modal when user wins
  * display timer
- * add functionality to restart game
  * add leaderboard
  * implement storage for leaderboard and game state
  */
