@@ -10,6 +10,7 @@ const memory = (function() {
         deck: '.deck',
         card: '.card',
         match: '.match',
+        timer: '.timer',
     },
     // Cards for the game
     cards = [
@@ -28,7 +29,10 @@ const memory = (function() {
     // During card animations this variable will be set to true to prevent clicking on other cards while the animation is still ongoing
     freezeGame = false,
     moves = 0,
-    stars = 3;
+    stars = 3,
+    startTime = 0,
+    totalTime = 0,
+    timerInterval;
     
     // Shuffle function from http://stackoverflow.com/a/2450976
     const shuffleCards = function(cards, times) {
@@ -110,6 +114,28 @@ const memory = (function() {
         document.querySelector(DOM.deck).addEventListener('click', showCards);
         document.querySelector(DOM.restartBtn).addEventListener('click', restartGame);
     };
+
+    const displayTimer = function(ms) {
+        const unformattedSeconds = Math.floor(ms / 1000);
+        const minutes = unformattedSeconds >= 60 ? Math.floor(unformattedSeconds / 60) : 0;
+        const seconds = minutes > 0 ? unformattedSeconds - (minutes * 60) : unformattedSeconds;
+        
+        // Format the second with a preceding 0 if it is lower than 10
+        document.querySelector(DOM.timer).textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    };
+
+    const runTimer = function() {
+        startTime = Date.now(); 
+        timerInterval = setInterval(function() {
+            totalTime = Date.now() - startTime;
+            displayTimer(totalTime);
+        }, 1000);
+    };
+
+    const stopTimer = function() {
+        displayTimer(0);
+        clearInterval(timerInterval);
+    };
     
     const displayStars = function() {
         let html = '';
@@ -164,12 +190,15 @@ const memory = (function() {
         generateDeck();
         displayMoveCounter();
         displayStars();
+        runTimer();
     };
 
     const restartGame = function() {
         moves = 0;
         stars = 3;
-        deckArray.splice(0,deckArray.length);
+        startTime = 0;
+        deckArray.splice(0, deckArray.length);
+        stopTimer();
         init();
     };
 
@@ -204,13 +233,14 @@ memory.init();
  * reduce stars if the player made a certain amount of moves
  * add functionality to restart game
  * display stars
+ * display timer
  */
 
 // TODO
 /*
  * add modal when user wins
- * display timer
  * add leaderboard
  * implement storage for leaderboard and game state
+ * improve user experience on smaller screen
  */
 
