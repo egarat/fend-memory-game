@@ -8,13 +8,13 @@
     <link href="https://fonts.googleapis.com/css?family=Coda|Open+Sans:300" rel="stylesheet">
     <link rel="stylesheet" href="css/app.css">
 </head>
-<body>
+<body class="modal start">
 
     <div class="container">
-        <header>
+<!--        <header>
             <h1>Matching Game</h1>
         </header>
-
+    -->
         <section class="score-panel">
         	<ul class="stars">
         		<li><i class="fa fa-star"></i></li>
@@ -32,6 +32,22 @@
         </section>
 
         <ul class="deck"></ul>
+    </div>
+
+    <div class="modal-container">
+        <div class="modal-box modal-start">
+            <header>
+                <h1>Matching Game</h1>
+                <hr>
+            </header>
+            <section>
+                <h3>How The Game Works</h3>
+                <p>The game board consists of sixteen "cards" arranged in a grid. The deck is made up of eight different pairs of cards, each with different symbols on one side. The cards are arranged randomly on the grid with the symbol face down. The gameplay rules are very simple: flip over two hidden cards at a time to locate the ones that match!</p>
+                <button class="btn btn-start">Play</button>
+            </section>
+        </div>
+
+        <div class="modal-box modal-finished"></div>
     </div>
 
     <script src="js/app.js"></script>

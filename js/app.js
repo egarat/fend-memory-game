@@ -11,6 +11,7 @@ const memory = (function() {
         card: '.card',
         match: '.match',
         timer: '.timer',
+        btnStart: '.btn-start',
     },
     // Cards for the game
     cards = [
@@ -112,7 +113,13 @@ const memory = (function() {
     
     const setEventHandler = function() {
         document.querySelector(DOM.deck).addEventListener('click', showCards);
-        document.querySelector(DOM.restartBtn).addEventListener('click', restartGame);
+        document.querySelector(DOM.restartBtn).addEventListener('click', startGame);
+        document.querySelector(DOM.btnStart).addEventListener('click', function() {
+            const body = document.querySelector('body');
+            body.classList.remove('modal');
+            body.classList.remove('start');
+            startGame();
+        });
     };
 
     const displayTimer = function(ms) {
@@ -190,23 +197,24 @@ const memory = (function() {
         generateDeck();
         displayMoveCounter();
         displayStars();
-        runTimer();
     };
-
-    const restartGame = function() {
+    
+    const startGame = function() {
         moves = 0;
         stars = 3;
         startTime = 0;
         deckArray.splice(0, deckArray.length);
-        stopTimer();
-        init();
-    };
-
-    const init = function() {
-        // Duplicate provided cards and shuffle them
         deckArray.push(...shuffleCards([...cards, ...cards], 3));
-        setEventHandler();
+        stopTimer();
+        runTimer();
         render();
+    };
+    
+    const init = function() {
+        
+        deckArray.push(...shuffleCards([...cards, ...cards], 3));
+        render();
+        setEventHandler();
     };
 
     return {
