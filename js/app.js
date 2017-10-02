@@ -140,9 +140,12 @@ const memory = (function() {
     };
 
     const stopTimer = function() {
-        displayTimer(0);
         clearInterval(timerInterval);
     };
+
+    const resetTimer = function() {
+        displayTimer(0);        
+    }
     
     const displayStars = function() {
         let html = '';
@@ -205,13 +208,12 @@ const memory = (function() {
         startTime = 0;
         deckArray.splice(0, deckArray.length);
         deckArray.push(...shuffleCards([...cards, ...cards], 3));
-        stopTimer();
+        resetTimer();
         runTimer();
         render();
     };
     
     const init = function() {
-        
         deckArray.push(...shuffleCards([...cards, ...cards], 3));
         render();
         setEventHandler();
