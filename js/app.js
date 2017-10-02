@@ -101,7 +101,7 @@ const memory = (function() {
                     if(isGameWon()) {
                         gameWon();
                     }
-                }, 400);
+                }, 200);
             } else {
                 setTimeout(function() {
                     toggleCardsStyle(firstCard, selectedCard, 'mismatch');
@@ -112,7 +112,7 @@ const memory = (function() {
                         toggleCardsStyle(firstCard, selectedCard, 'mismatch');
                         finishTurn();
                     }, 500);
-                }, 400)
+                }, 200)
             }
         } else {
             // If this is the first card uncovered this turn, then store it to a variable to compare it with the next card
@@ -208,14 +208,14 @@ const memory = (function() {
                 html += '<i class="fa fa-star-o"></i>';
             }
         }
-        
+
         document.querySelector(DOM.stars).innerHTML = html;
     };
 
     const updateStars = function() {
         // Stars cannot be lower than 0
         if(stars === 0 || moves <= deckArray.length) return;
-        
+
         // Reduce half a star for every 6 moves over the amount of cards in the deck
         if((moves - deckArray.length) % 6 === 0) {
             stars -= 0.5;
@@ -226,7 +226,7 @@ const memory = (function() {
     const displayMoveCounter = function() {
         document.querySelector(DOM.moves).textContent = moves;
     };
-    
+
     const updateMoves = function() {
         moves++;
         displayMoveCounter();
@@ -249,7 +249,7 @@ const memory = (function() {
         displayMoveCounter();
         displayStars();
     };
-    
+
     const startGame = function() {
         moves = 0;
         stars = 3;
@@ -260,7 +260,7 @@ const memory = (function() {
         runTimer();
         render();
     };
-    
+
     const init = function() {
         deckArray.push(...shuffleCards([...cards, ...cards], 3));
         render();
