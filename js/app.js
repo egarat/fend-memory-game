@@ -38,7 +38,7 @@ const memory = (function() {
     startTime = 0,
     totalTime = 0,
     timerInterval;
-    
+
     // Shuffle function from http://stackoverflow.com/a/2450976
     const shuffleCards = function(cards, times) {
         for(let i = 0; i < times; i++) {
@@ -87,7 +87,7 @@ const memory = (function() {
         // Increment move counter and update the display
         updateMoves();
         updateStars();
-        
+
         // Check if it is the second shown card in this turn
         if(firstCard) {
             // Check if cards match
@@ -119,7 +119,7 @@ const memory = (function() {
             firstCard = selectedCard;
         }
     };
-    
+
     const setEventHandler = function() {
         document.querySelector(DOM.deck).addEventListener('click', showCards);
         document.querySelector(DOM.restartBtn).addEventListener('click', startGame);
@@ -130,7 +130,7 @@ const memory = (function() {
             hideModal('finished');
         });
     };
-    
+
     const hideModal = function(type) {
         const body = document.querySelector('body');
         body.classList.remove('modal');
@@ -195,7 +195,7 @@ const memory = (function() {
         
         document.querySelector(DOM.stars).innerHTML = html;
     };
-    
+
     const updateStars = function() {
         // Stars cannot be lower than 0
         if(stars === 0 || moves <= deckArray.length) return;
@@ -206,7 +206,7 @@ const memory = (function() {
             displayStars();
         }
     };
-    
+
     const displayMoveCounter = function() {
         document.querySelector(DOM.moves).textContent = moves;
     };
@@ -258,29 +258,8 @@ const memory = (function() {
 
 memory.init();
 
-// DONE
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- * reduce stars if the player made a certain amount of moves
- * add functionality to restart game
- * display stars
- * display timer
- */
-
 // TODO
 /*
- * add modal when user wins
  * add leaderboard
  * implement storage for leaderboard and game state
  * improve user experience on smaller screen
