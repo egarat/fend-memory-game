@@ -136,15 +136,24 @@ const memory = (function() {
         body.classList.remove('modal');
         body.classList.remove(type);
         startGame();
-    }
+    };
 
-    const displayTimer = function(ms) {
+    // This function takes time in miliseconds and returns an array with formatted time
+    // Return: Object (Properties: formatted minutes and seconds)
+    const formatTime = function(ms) {
         const unformattedSeconds = Math.floor(ms / 1000);
         const minutes = unformattedSeconds >= 60 ? Math.floor(unformattedSeconds / 60) : 0;
         const seconds = minutes > 0 ? unformattedSeconds - (minutes * 60) : unformattedSeconds;
 
-        // Format the second with a preceding 0 if it is lower than 10
-        document.querySelector(DOM.timer).textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        return {
+            minutes,
+            seconds: seconds < 10 ? '0' + seconds : seconds
+        };
+    };
+    
+    const displayTimer = function(ms) {
+        const formattedTime = formatTime(ms);
+        document.querySelector(DOM.timer).textContent = `${formattedTime.minutes}:${formattedTime.seconds}`;
     };
 
     const runTimer = function() {
@@ -174,10 +183,17 @@ const memory = (function() {
     };
 
     const displayResults = function() {
+        const formattedTime = formatTime(totalTime);
+        const minutes = formattedTime.minutes;
+        const seconds = formattedTime.seconds;
+
+        let timeString = minutes > 0 ? (minutes > 1 ? minutes + ' minutes ' : minutes + ' minute ') : '';
+        timeString += seconds + ' seconds';
+
         document.querySelector(DOM.resultMoves).textContent = moves;
         document.querySelector(DOM.resultStars).textContent = stars;
-        document.querySelector(DOM.resultTime).textContent = totalTime;
-    }
+        document.querySelector(DOM.resultTime).textContent = timeString;
+    };
 
     const displayStars = function() {
         let html = '';
