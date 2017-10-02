@@ -12,6 +12,10 @@ const memory = (function() {
         match: '.match',
         timer: '.timer',
         btnStart: '.btn-start',
+        btnRestart: '.btn-restart',
+        resultMoves: '.result-moves',
+        resultStars: '.result-stars',
+        resultTime: '.result-time',
     },
     // Cards for the game
     cards = [
@@ -64,9 +68,14 @@ const memory = (function() {
         freezeGame = false;
     };
 
-    const gameWon = function() {
+    const isGameWon = function() {
         return document.querySelectorAll(DOM.card).length === document.querySelectorAll(DOM.match).length;
     };
+
+    const gameWon = function() {
+        stopTimer();
+        displayModal('finished');
+    }
 
     const showCards = function(evt) {
         // Silently return function when clicked element is not a list item or is currently being shown
@@ -89,8 +98,8 @@ const memory = (function() {
                     finishTurn();
                     
                     // Check if game is won
-                    if(gameWon()) {
-                        alert('You win!');
+                    if(isGameWon()) {
+                        gameWon();
                     }
                 }, 400);
             } else {
@@ -115,18 +124,25 @@ const memory = (function() {
         document.querySelector(DOM.deck).addEventListener('click', showCards);
         document.querySelector(DOM.restartBtn).addEventListener('click', startGame);
         document.querySelector(DOM.btnStart).addEventListener('click', function() {
-            const body = document.querySelector('body');
-            body.classList.remove('modal');
-            body.classList.remove('start');
-            startGame();
+            hideModal('start');
+        });
+        document.querySelector(DOM.btnRestart).addEventListener('click', function() {
+            hideModal('finished');
         });
     };
+    
+    const hideModal = function(type) {
+        const body = document.querySelector('body');
+        body.classList.remove('modal');
+        body.classList.remove(type);
+        startGame();
+    }
 
     const displayTimer = function(ms) {
         const unformattedSeconds = Math.floor(ms / 1000);
         const minutes = unformattedSeconds >= 60 ? Math.floor(unformattedSeconds / 60) : 0;
         const seconds = minutes > 0 ? unformattedSeconds - (minutes * 60) : unformattedSeconds;
-        
+
         // Format the second with a preceding 0 if it is lower than 10
         document.querySelector(DOM.timer).textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
     };
@@ -144,9 +160,25 @@ const memory = (function() {
     };
 
     const resetTimer = function() {
-        displayTimer(0);        
+        displayTimer(0);
     }
-    
+
+    const displayModal = function(type) {
+        const body = document.querySelector('body');
+        body.classList.add('modal');
+        body.classList.add(type);
+
+        if(type === 'finished') {
+            displayResults();
+        }
+    };
+
+    const displayResults = function() {
+        document.querySelector(DOM.resultMoves).textContent = moves;
+        document.querySelector(DOM.resultStars).textContent = stars;
+        document.querySelector(DOM.resultTime).textContent = totalTime;
+    }
+
     const displayStars = function() {
         let html = '';
         for(let i = 0; i < 3; i++) {
@@ -205,7 +237,7 @@ const memory = (function() {
     const startGame = function() {
         moves = 0;
         stars = 3;
-        startTime = 0;
+        totalTime = 0;
         deckArray.splice(0, deckArray.length);
         deckArray.push(...shuffleCards([...cards, ...cards], 3));
         resetTimer();
