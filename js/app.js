@@ -214,7 +214,7 @@ const memory = (function() {
 
     const updateStars = function() {
         // Stars cannot be lower than 0
-        if(stars === 0 || moves <= deckArray.length) return;
+        if(stars === 1 || moves <= deckArray.length) return;
 
         // Reduce half a star for every 6 moves over the amount of cards in the deck
         if((moves - deckArray.length) % 6 === 0) {
